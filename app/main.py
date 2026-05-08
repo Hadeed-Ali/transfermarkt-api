@@ -15,6 +15,9 @@ limiter = Limiter(
     enabled=settings.RATE_LIMITING_ENABLE,
 )
 app = FastAPI(title="Transfermarkt API")
+@app.api_route("/health", methods=["GET", "HEAD"])
+async def health():
+    return {"status": "ok"}
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.add_middleware(SlowAPIMiddleware)
